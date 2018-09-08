@@ -1,0 +1,21 @@
+namespace com.algorythmix.assets
+
+abstract asset Gold {
+
+}
+
+asset ScrapGold extends Gold identified by id {
+  o String id
+}
+
+asset RefinedGold extends Gold identified by id {
+  o String id
+}
+
+asset Nugget extends Gold identified by id {
+  o String id
+}
+
+asset Product extends Gold identified by id {
+  o String id
+}

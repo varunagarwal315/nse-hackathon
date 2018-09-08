@@ -1,0 +1,16 @@
+{
+  "name": "nse-hackathon",
+  "version": "1.0.0",
+  "description": "Chaincode for Algorythmix submission for NSE Future Tech 2018 hackathon",
+  "author": "Varun Agarwal <varunagarwal315@gmail.com>",
+  "engines": {
+    "node": ">=8.9.0",
+    "npm": ">=5.2.6",
+    "Fabric": "1.1"
+  },
+  "license": "ISC",
+  "contributors": [
+    "Varun Agarwal <varun@algorythmix.in>",
+    "Utkarsh Verma <utkarsh@algorythmix.in>"
+  ]
+}
