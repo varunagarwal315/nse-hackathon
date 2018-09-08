@@ -1,9 +1,10 @@
 # Algorythmix - NSE Future Tech 2018
 
+
 ## Scope
-- Tokenization of assets for capital markets
-- Debt and risk profile management
-- Customized insurance schemes
+- Tokenization of assets to enable vendor financing
+- World view for vendors-corporations-financers
+
 
 ## Solution
 

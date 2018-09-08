@@ -1,0 +1,26 @@
+namespace com.algorythmix.participants
+
+abstract participant Business identified by id {
+  o String id
+  o String name
+  o DateTime creationDate
+  o String pancard
+  o Address address
+}
+
+participant Vendor extends Business {
+}
+
+participant Corporation extends Business {
+}
+
+participant Financer extends Business {
+}
+
+concept Address {
+  o String building
+  o String street
+  o String locality
+  o String city
+  o String pinCode
+}

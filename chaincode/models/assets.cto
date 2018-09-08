@@ -1,0 +1,106 @@
+namespace com.algorythmix.assets
+
+
+asset Requirements identified by id {
+  o String id
+  o String corporationId
+  o String description
+  o DateTime expectedDateOfDelivery
+}
+
+
+asset InvoiceRequest identified by id {
+  o String id
+  o String vendorId
+  o String corporationId
+  o String requirementsId optional
+  o String invoiceId
+  o Double amountRequested
+  o DateTime paymentDate
+  o RequestStatus requestStatus
+  o String hash
+  o String documentKey
+}
+
+
+asset Proposal identified by id {
+  o String id
+  o String invoiceRequestId
+  o String vendorId
+  o String financerId
+  o String corporationId
+  o DateTime dateOfCreation
+  o ProposalStatus proposalStatus
+}
+
+
+asset InvoiceDiscounting identified by id {
+  o String id
+  o InvoiceDiscountingStatus invoiceDiscountingStatus
+  o String proposalId
+  o String vendorId
+  o String financerId
+  o String corporationId
+}
+
+
+enum RequestStatus {
+ o APPROVAL_PENDING
+ o APPROVED
+ o REJECTED
+}
+
+enum ProposalStatus {
+ o APPROVAL_PENDING
+ o APPROVED_BY_VENDOR
+ o APPROVED_BY_CORPORATION
+ o REJECTED_BY_VENDOR
+ o REJECTED_BY_CORPORATION
+}
+
+enum InvoiceDiscountingStatus {
+
+}
+
+
+// Tx start
+transaction InitiateRequirements {
+  o String id
+  o String description
+  o DateTime expectedDateOfDelivery
+}
+
+transaction InitiateInvoiceRequest {
+  o String id
+  o String invoiceId
+  o String corporationId
+  o Double amountRequested
+  o DateTime paymentDate
+  o String hash
+  o String documentKey
+}
+
+transaction ApproveInvoiceRequest {
+  o String invoiceRequestId
+}
+
+
+transaction InitiateProposal {
+  o String id
+  o String invoiceRequestId
+}
+
+
+transaction VendorApprovesProposal {
+  o String proposalId
+  o Boolean approve
+}
+
+transaction CorporationApprovesProposal {
+  o String proposalId
+  o Boolean approve
+}
+
+transaction ReceivePaymentForInvoiceReqest {
+ o String id
+}
