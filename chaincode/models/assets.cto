@@ -92,15 +92,6 @@ transaction ApproveInvoiceRequest {
   o String invoiceRequestId
 }
 
-o String vendorId
-o String financerId
-o String corporationId
-o DateTime dateOfCreation
-o Double amount
-o Double numberOfDays
-o Double interestRate
-o ProposalStatus proposalStatus
-
 // Step 4) Financer creates a proposal for an invoice
 transaction InitiateProposal {
   o String id
