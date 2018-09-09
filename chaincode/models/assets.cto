@@ -72,8 +72,9 @@ enum InvoiceDiscountingStatus {
 // STEP 1) Buyer sends a PO
 transaction InitiateRequirements {
   o String id
+  o String corporationId
+  o String vendorId
   o String description
-  o DateTime expectedDateOfDelivery
 }
 
 // Step 2) Vendor raises invoice against a PO
@@ -81,10 +82,9 @@ transaction InitiateInvoiceRequest {
   o String id
   o String invoiceId
   o String corporationId
+  o String requirementsId
   o Double amountRequested
   o DateTime paymentDate
-  o String hash
-  o String documentKey
 }
 
 // Step 3) Buyer approves invoice request made by vendor
@@ -92,10 +92,24 @@ transaction ApproveInvoiceRequest {
   o String invoiceRequestId
 }
 
+o String vendorId
+o String financerId
+o String corporationId
+o DateTime dateOfCreation
+o Double amount
+o Double numberOfDays
+o Double interestRate
+o ProposalStatus proposalStatus
+
 // Step 4) Financer creates a proposal for an invoice
 transaction InitiateProposal {
   o String id
   o String invoiceRequestId
+  o String vendorId
+  o String corporationId
+  o Double amount
+  o Double numberOfDays
+  o Double interestRate
 }
 
 // Step 5) Vendor approves the proposal

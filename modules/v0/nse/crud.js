@@ -14,11 +14,13 @@ const initiateRequirements = (req, res) => {
   try {
     await businessNetworkConnection.connect(corporationCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+
     let tx = factory.newTransaction(ASSET_NS, 'InitiateRequirements');
     tx.id = req.body.id;
     tx.corporationId = req.body.corporationId;
     tx.description = req.body.description;
-    tx.expectedDateOfDelivery = req.body.expectedDateOfDelivery;
+    tx.vendorId = req.body.vendorId;
+
     await businessNetworkConnection.submitTransaction(tx);
     await businessNetworkConnection.disconnect();
     res.json({
@@ -42,14 +44,16 @@ const initiateInvoiceRequest = (req, res) => {
   try {
     await businessNetworkConnection.connect(vendorCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+
     let tx = factory.newTransaction(ASSET_NS, 'InitiateInvoiceRequest');
+    tx.id = req.body.id;
     tx.amountRequested = req.body.amountRequested;
     tx.corporationId = req.body.corporationId;
     tx.invoiceId = req.body.invoiceId;
     tx.paymentDate = req.body.paymentDate;
-    tx.hash = req.body.hash;
-    tx.documentKey = req.body.documentKey;
+    tx.requirementsId = req.body.requirementsId;
     await businessNetworkConnection.submitTransaction(tx);
+
     await businessNetworkConnection.disconnect();
     res.json({
       timestamp: new Date(),
@@ -72,8 +76,10 @@ const approveInvoiceRequest = (req, res) => {
   try {
     await businessNetworkConnection.connect(corporationCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+
     let tx = factory.newTransaction(ASSET_NS, 'ApproveInvoiceRequest');
     tx.invoiceRequestId = req.body.invoiceRequestId;
+
     await businessNetworkConnection.submitTransaction(tx);
     await businessNetworkConnection.disconnect();
     res.json({
@@ -89,16 +95,20 @@ const approveInvoiceRequest = (req, res) => {
   };
 };
 
-
 const initiateProposal = (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(financerCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+
     let tx = factory.newTransaction(ASSET_NS, 'InitiateProposal');
     tx.invoiceRequestId = req.body.invoiceRequestId;
-    // Add more details here
+    tx.invoiceId = req.body.invoiceId;
+    tx.corporationId = req.body.corporationId;
+    tx.amount = req.body.amount;
+    tx.numberOfDays = req.body.numberOfDays;
     await businessNetworkConnection.submitTransaction(tx);
+
     await businessNetworkConnection.disconnect();
     res.json({
       timestamp: new Date(),
@@ -118,10 +128,11 @@ const vendorApprovesProposal = (req, res) => {
   try {
     await businessNetworkConnection.connect(vendorCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+
     let tx = factory.newTransaction(ASSET_NS, 'VendorApprovesProposal');
     tx.approve = req.body.approve;
     tx.proposalId = req.body.proposalId;
-    // Add more details here
+
     await businessNetworkConnection.submitTransaction(tx);
     await businessNetworkConnection.disconnect();
     res.json({
@@ -142,10 +153,11 @@ const corporationApprovesProposal = (req, res) => {
   try {
     await businessNetworkConnection.connect(corporationCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+
     let tx = factory.newTransaction(ASSET_NS, 'CorporationApprovesProposal');
     tx.approve = req.body.approve;
     tx.proposalId = req.body.proposalId;
-    // Add more details here
+
     await businessNetworkConnection.submitTransaction(tx);
     await businessNetworkConnection.disconnect();
     res.json({

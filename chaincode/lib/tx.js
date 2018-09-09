@@ -9,7 +9,7 @@
    var requirements = factory.newResource('com.algorythmix.assets', 'Requirements', tx.id);
    requirements.corporationId = getCurrentParticipant().getFullyQualifiedIdentifier().slice(41);
    requirements.description = tx.description;
-   requirements.expectedDateOfDelivery = tx.expectedDateOfDelivery;
+   requirements.vendorId = tx.vendorId;
    await registry.add(requirements);
  };
 
@@ -22,15 +22,16 @@
  async function InitiateInvoiceRequest(tx) {
   var factory = getFactory();
    var registry = await getAssetRegistry('com.algorythmix.assets.InvoiceRequest');
+
    var request = factory.newResource('com.algorythmix.assets', 'InvoiceRequest', tx.id);
-   request.amountRequested = tx.amountRequested;
    request.vendorId = getCurrentParticipant().getFullyQualifiedIdentifier().slice(36);
    request.corporationId = tx.corporationId;
+   request.requirementsId = tx.requirementsId;
    request.invoiceId = tx.invoiceId;
    request.paymentDate = tx.paymentDate;
-   request.hash = tx.hash;
+   request.amountRequested = tx.amountRequested;
    request.requestStatus = 'APPROVAL_PENDING';
-   request.documentKey = tx.documentKey;
+
    await registry.add(request);
  };
 
@@ -58,11 +59,19 @@ async function InitiateProposal(tx) {
   var registry = await getAssetRegistry('com.algorythmix.assets.Proposal');
   var invoiceRequestRegistry = await getAssetRegistry('com.algorythmix.assets.InvoiceRequest');
   var invoiceRequest = await invoiceRequestRegistry.get(tx.invoiceRequestId);
+
   if (invoiceRequest.requestStatus !== 'APPROVED') { throw new Error('Not yet approved by the corporation'); };
+
   var proposal = factory.newResource('com.algorythmix.assets', 'Proposal', tx.id);
   proposal.proposalStatus = 'APPROVAL_PENDING';
-  proposal.invoiceRequestId = tx.invoiceRequestId; // @dec Check the status of the invoice, should be APPROVED
+  proposal.invoiceRequestId = tx.invoiceRequestId;
+  proposal.invoiceId = tx.invoiceId;
+  proposal.corporationId = tx.corporationId;
+  proposal.amount = tx.amount;
+  proposal.numberOfDays = tx.numberOfDays;
+  proposal.interestRate = tx.interestRate;
   proposal.dateOfCreation = new Date();
+
   await registry.add(proposal);
 };
 
