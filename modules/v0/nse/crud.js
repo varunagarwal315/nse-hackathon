@@ -93,7 +93,7 @@ const approveInvoiceRequest = (req, res) => {
 const initiateProposal = (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
-    await businessNetworkConnection.connect(corporationCard);
+    await businessNetworkConnection.connect(financerCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
     let tx = factory.newTransaction(ASSET_NS, 'InitiateProposal');
     tx.invoiceRequestId = req.body.invoiceRequestId;
@@ -114,9 +114,58 @@ const initiateProposal = (req, res) => {
 };
 
 const vendorApprovesProposal = (req, res) => {
-
+  const businessNetworkConnection = new BusinessNetworkConnection();
+  try {
+    await businessNetworkConnection.connect(vendorCard);
+    const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+    let tx = factory.newTransaction(ASSET_NS, 'VendorApprovesProposal');
+    tx.approve = req.body.approve;
+    tx.proposalId = req.body.proposalId;
+    // Add more details here
+    await businessNetworkConnection.submitTransaction(tx);
+    await businessNetworkConnection.disconnect();
+    res.json({
+      timestamp: new Date(),
+      message: 'The invoice has been approved',
+      devMessage: 'Success'
+    });
+  } catch (e) {
+    devMessage: 'Critical error',
+    error: {
+      message: e.message
+    }
+  };
 };
 
 const corporationApprovesProposal = (req, res) => {
+  const businessNetworkConnection = new BusinessNetworkConnection();
+  try {
+    await businessNetworkConnection.connect(corporationCard);
+    const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
+    let tx = factory.newTransaction(ASSET_NS, 'CorporationApprovesProposal');
+    tx.approve = req.body.approve;
+    tx.proposalId = req.body.proposalId;
+    // Add more details here
+    await businessNetworkConnection.submitTransaction(tx);
+    await businessNetworkConnection.disconnect();
+    res.json({
+      timestamp: new Date(),
+      message: 'The invoice has been approved',
+      devMessage: 'Success'
+    });
+  } catch (e) {
+    devMessage: 'Critical error',
+    error: {
+      message: e.message
+    }
+  };
+};
 
+module.exports = {
+  initiateRequirements,
+  initiateInvoiceRequest,
+  approveInvoiceRequest,
+  initiateProposal,
+  vendorApprovesProposal,
+  corporationApprovesProposal
 };

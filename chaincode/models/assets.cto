@@ -5,7 +5,7 @@ asset Requirements identified by id {
   o String id
   o String corporationId
   o String description
-  o DateTime expectedDateOfDelivery
+  o String vendorId
 }
 
 
@@ -13,13 +13,15 @@ asset InvoiceRequest identified by id {
   o String id
   o String vendorId
   o String corporationId
-  o String requirementsId optional
+  o String requirementsId
   o String invoiceId
   o Double amountRequested
   o DateTime paymentDate
   o RequestStatus requestStatus
-  o String hash
-  o String documentKey
+
+  // Not for current demo
+  o String hash optional
+  o String documentKey optional
 }
 
 
@@ -30,17 +32,20 @@ asset Proposal identified by id {
   o String financerId
   o String corporationId
   o DateTime dateOfCreation
+  o Double amount
+  o Double numberOfDays
+  o Double interestRate
   o ProposalStatus proposalStatus
 }
 
 
 asset InvoiceDiscounting identified by id {
   o String id
-  o InvoiceDiscountingStatus invoiceDiscountingStatus
   o String proposalId
   o String vendorId
   o String financerId
   o String corporationId
+  o InvoiceDiscountingStatus invoiceDiscountingStatus
 }
 
 
@@ -59,17 +64,19 @@ enum ProposalStatus {
 }
 
 enum InvoiceDiscountingStatus {
-
+  o APPROVAL_PENDING
+  o APPROVED
 }
 
 
-// Tx start
+// STEP 1) Buyer sends a PO
 transaction InitiateRequirements {
   o String id
   o String description
   o DateTime expectedDateOfDelivery
 }
 
+// Step 2) Vendor raises invoice against a PO
 transaction InitiateInvoiceRequest {
   o String id
   o String invoiceId
@@ -80,22 +87,24 @@ transaction InitiateInvoiceRequest {
   o String documentKey
 }
 
+// Step 3) Buyer approves invoice request made by vendor
 transaction ApproveInvoiceRequest {
   o String invoiceRequestId
 }
 
-
+// Step 4) Financer creates a proposal for an invoice
 transaction InitiateProposal {
   o String id
   o String invoiceRequestId
 }
 
-
+// Step 5) Vendor approves the proposal
 transaction VendorApprovesProposal {
   o String proposalId
   o Boolean approve
 }
 
+// Step 6) Buyer approves proposal; invoice discounting asset auto created
 transaction CorporationApprovesProposal {
   o String proposalId
   o Boolean approve

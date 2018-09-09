@@ -5,7 +5,7 @@ const AdminConnection = require('composer-admin').AdminConnection;
 const IdCard = require('composer-common').IdCard;
 const PARTICIPANT_NS = 'com.algorythmix.participants';
 const adminCardName = 'admin@nse-hackathon';
-
+const connectionProfile = {"name":"fabric-network","x-type":"hlfv1","version":"1.0.0","peers":{"peer0.org1.example.com":{"url":"grpc://localhost:7051","eventUrl":"grpc://localhost:7053"}},"certificateAuthorities":{"ca.org1.example.com":{"url":"http://localhost:7054","caName":"ca.org1.example.com"}},"orderers":{"orderer.example.com":{"url":"grpc://localhost:7050"}},"organizations":{"Org1":{"mspid":"Org1MSP","peers":["peer0.org1.example.com"],"certificateAuthorities":["ca.org1.example.com"]}},"channels":{"composerchannel":{"orderers":["orderer.example.com"],"peers":{"peer0.org1.example.com":{"endorsingPeer":true,"chaincodeQuery":true,"eventSource":true}}}},"client":{"organization":"Org1","connection":{"timeout":{"peer":{"endorser":"300","eventHub":"300","eventReg":"300"},"orderer":"300"}}}};
 
 const initParticipants = () => {
   return new Promise(async function(resolve, reject) {
@@ -18,7 +18,7 @@ const initParticipants = () => {
       let financerRegistry =  await businessNetworkConnection.getParticipantRegistry(`${PARTICIPANT_NS}.Financer`);
       const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
 
-      let vendor = factory.newResource(PARTICIPANT_NS, 'Vendor', 'vendor123');
+      let vendor = factory.newResource(PARTICIPANT_NS, 'Vendor', 'vendor1234');
       vendor.name = 'Varun Agarwal';
       vendor.creationDate = new Date();
       let addressOne = factory.newConcept(PARTICIPANT_NS, 'Address');
@@ -28,9 +28,9 @@ const initParticipants = () => {
       addressOne.city = 'City 101';
       addressOne.pinCode = 'PIN#101';
       vendor.address = addressOne;
-      vendor.pan = 'PAN#VENDOR';
+      vendor.pancard = 'PAN#VENDOR';
 
-      let corporation = factory.newResource(PARTICIPANT_NS, 'Corporation', 'corporation123');
+      let corporation = factory.newResource(PARTICIPANT_NS, 'Corporation', 'corporation1234');
       corporation.name = 'Utkarsh and Sons';
       corporation.creationDate = new Date();
       let addressTwo = factory.newConcept(PARTICIPANT_NS, 'Address');
@@ -40,9 +40,9 @@ const initParticipants = () => {
       addressTwo.city = 'City 102';
       addressTwo.pinCode = 'PIN#102';
       corporation.address = addressTwo;
-      corporation.pan = 'PAN#CORPORATION';
+      corporation.pancard = 'PAN#CORPORATION';
 
-      let financer = factory.newResource(PARTICIPANT_NS, 'Financer', 'financer123');
+      let financer = factory.newResource(PARTICIPANT_NS, 'Financer', 'financer1234');
       financer.name = 'Juzer ventures';
       financer.creationDate = new Date();
       corporation.creationDate = new Date();
@@ -53,7 +53,7 @@ const initParticipants = () => {
       addressThree.city = 'City 103';
       addressThree.pinCode = 'PIN#103';
       financer.address = addressThree;
-      financer.pan = 'PAN#FINANCER';
+      financer.pancard = 'PAN#FINANCER';
 
       await vendorRegistry.add(vendor);
       await corporationRegistry.add(corporation);
@@ -79,19 +79,19 @@ const initIdentities = () => {
       let financerRegistry =  await businessNetworkConnection.getParticipantRegistry(`${PARTICIPANT_NS}.Financer`);
       const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
 
-      let vendor = await vendorRegistry.get('vendor123');
-      let corporation = await vendorRegistry.get('corporation123');
-      let financer = await vendorRegistry.get('financer123');
+      let vendor = await vendorRegistry.get('vendor1234');
+      let corporation = await corporationRegistry.get('corporation1234');
+      let financer = await financerRegistry.get('financer1234');
 
-      let vendorID = await businessNetworkConnection.issueIdentity(`${PARTICIPANT_NS}.Vendor#vendor123`, 'vendor123');
+      let vendorID = await businessNetworkConnection.issueIdentity(`${PARTICIPANT_NS}.Vendor#vendor1234`, 'vendor1234');
       console.log(`userID = ${vendorID.userID}`);
       console.log(`userSecret = ${vendorID.userSecret}`);
 
-      let corporationID = await businessNetworkConnection.issueIdentity(`${PARTICIPANT_NS}.Corporation#corporation123`, 'corporation123');
+      let corporationID = await businessNetworkConnection.issueIdentity(`${PARTICIPANT_NS}.Corporation#corporation1234`, 'corporation1234');
       console.log(`userID = ${corporationID.userID}`);
       console.log(`userSecret = ${corporationID.userSecret}`);
 
-      let financerID = await businessNetworkConnection.issueIdentity(`${PARTICIPANT_NS}.Financer#financer123`, 'financer123');
+      let financerID = await businessNetworkConnection.issueIdentity(`${PARTICIPANT_NS}.Financer#financer1234`, 'financer1234');
       console.log(`userID = ${financerID.userID}`);
       console.log(`userSecret = ${financerID.userSecret}`);
 
@@ -100,21 +100,21 @@ const initIdentities = () => {
       console.log('connected');
 
       const cardOne = new IdCard({
-        userName: 'vendor123',
+        userName: 'vendor1234',
         version: 1,
         enrollmentSecret: vendorID.userSecret,
         businessNetwork: 'nse-hackathon'
       }, connectionProfile);
 
       const cardTwo = new IdCard({
-        userName: 'corporation123',
+        userName: 'corporation1234',
         version: 1,
         enrollmentSecret: corporationID.userSecret,
         businessNetwork: 'nse-hackathon'
       }, connectionProfile);
 
       const cardThree = new IdCard({
-        userName: 'financer123',
+        userName: 'financer1234',
         version: 1,
         enrollmentSecret: financerID.userSecret,
         businessNetwork: 'nse-hackathon'
@@ -133,20 +133,60 @@ const initIdentities = () => {
   });
 };
 
+const importCards = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const adminConnection = new AdminConnection();
+      await adminConnection.connect(adminCardName);
+      console.log('connected');
+
+      const cardOne = new IdCard({
+        userName: 'vendor1234',
+        version: 1,
+        enrollmentSecret: vendorID.userSecret,
+        businessNetwork: 'nse-hackathon'
+      }, connectionProfile);
+
+      const cardTwo = new IdCard({
+        userName: 'corporation1234',
+        version: 1,
+        enrollmentSecret: corporationID.userSecret,
+        businessNetwork: 'nse-hackathon'
+      }, connectionProfile);
+
+      const cardThree = new IdCard({
+        userName: 'financer1234',
+        version: 1,
+        enrollmentSecret: financerID.userSecret,
+        businessNetwork: 'nse-hackathon'
+      }, connectionProfile);
+
+      await adminConnection.importCard('vendor@nse-hackathon', cardOne);
+      await adminConnection.importCard('corporation@nse-hackathon', cardTwo);
+      await adminConnection.importCard('financer@nse-hackathon', cardThree);
+
+      await businessNetworkConnection.disconnect();
+      await adminConnection.disconnect();
+      resolve();
+    } catch (e) {
+      reject(e);
+    };
+  });
+};
 
 const pingNetwork = () => {
   return new Promise(async (resolve, reject) => {
     const businessNetworkConnection = new BusinessNetworkConnection();
-    await businessNetworkConnection.connect('vendor');
+    await businessNetworkConnection.connect('vendor@nse-hackathon');
     await businessNetworkConnection.ping();
     console.log('Generated certificate for vendor');
 
     await businessNetworkConnection.disconnect();
-    await businessNetworkConnection.connect('corporation');
+    await businessNetworkConnection.connect('corporation@nse-hackathon');
     await businessNetworkConnection.ping();
     console.log('Generated certificate for corporation');
 
-    await businessNetworkConnection.connect('financer');
+    await businessNetworkConnection.connect('financer@nse-hackathon');
     await businessNetworkConnection.ping();
     console.log('Generated certificate for financer');
 
