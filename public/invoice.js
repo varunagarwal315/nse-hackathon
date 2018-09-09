@@ -31,6 +31,7 @@ $(document).ready(function() {
             today = dd + '/' + mm + '/' + yyyy;
             var markup =
             `<tr>
+                <td>${invoices[i].id}</td>
                 <td>${invoices[i].invoiceId}</td>
                 <td>${invoices[i].requirementsId}</td>
                 <td>${today}</td>
@@ -47,4 +48,27 @@ $(document).ready(function() {
     });
   };
   callInvoice();
+
+  $('#btn-approve').click(function () {
+    let payload = {
+      invoiceRequestId: $('#input').val()
+    };
+    console.log(payload);
+    $.ajax({
+      type: 'POST',
+      url: '../api/v0/nse/invoiceRequests/approve',
+      dataType: 'json',
+      data: payload,
+      success: function(data) {
+        console.log(data)
+        if (data.error) {
+          $('#response').text('Failed to create a purchase order')
+          return false;
+        } else {
+          $('#response').text('Purchase order has been created')
+        };
+      }
+    });
+    return false;
+  });
 });

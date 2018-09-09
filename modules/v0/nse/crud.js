@@ -52,10 +52,12 @@ const initiateInvoiceRequest = async (req, res) => {
     tx.amountRequested = parseFloat(req.body.amountRequested);
     tx.corporationId = 'corporation1234'; // TODO: LEFT, hardcode?
     tx.invoiceId = req.body.invoiceId;
+    tx.requirementsId = req.body.requirementsId;
+
     var d = new Date();
     d.setMonth(d.getMonth() + 3);
     tx.paymentDate = new Date(d);
-    tx.requirementsId = req.body.requirementsId;
+
     await businessNetworkConnection.submitTransaction(tx);
 
     await businessNetworkConnection.disconnect();
@@ -93,6 +95,7 @@ const approveInvoiceRequest = async (req, res) => {
       devMessage: 'Success'
     });
   } catch (e) {
+    console.log(e.message);
     res.json({
       devMessage: 'Critical error',
       error: {
@@ -111,7 +114,9 @@ const initiateProposal = async (req, res) => {
     let tx = factory.newTransaction(ASSET_NS, 'InitiateProposal');
 
     tx.id = req.body.id;
+
     tx.invoiceRequestId = req.body.invoiceRequestId;
+
     // tx.invoiceId = req.body.invoiceId;
     tx.amount = req.body.amount;
     tx.numberOfDays = req.body.numberOfDays;

@@ -1,6 +1,6 @@
 {
   "name": "nse-hackathon",
-  "version": "2.0.0",
+  "version": "4.0.0",
   "description": "Chaincode for Algorythmix submission for NSE Future Tech 2018 hackathon",
   "author": "Varun Agarwal <varunagarwal315@gmail.com>",
   "engines": {

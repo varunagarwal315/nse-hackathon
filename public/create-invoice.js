@@ -23,10 +23,18 @@ $(document).ready(function() {
 
   getAllRequirements();
 
+
   $('#btn-create-invoice').click(function () {
+    //
+    // tx.id = 'vendor1234' + req.body.invoiceId;
+    // tx.amountRequested = parseFloat(req.body.amountRequested);
+    // tx.invoiceId = req.body.invoiceId;
+    // tx.requirementsId = req.body.requirementsId;
 
     let payload = {
-      invoiceRequestId: invoiceRequestId
+      invoiceId: $('#invoice-id').val(),
+      amountRequested: $('#invoice-amount').val(),
+      requirementsId: $("#select-po").val()
     };
     console.log(payload);
 

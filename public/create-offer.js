@@ -33,6 +33,7 @@ $(document).ready(function() {
     let payload = {
     "id": id,
     "invoiceRequestId": invoiceRequestId,
+    "invoiceId": invoiceRequestId,
     "interestRate": interestRate,
     "amount": amount,
     "numberOfDays": numberOfDays

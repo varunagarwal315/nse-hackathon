@@ -65,7 +65,7 @@ async function InitiateProposal(tx) {
   var proposal = factory.newResource('com.algorythmix.assets', 'Proposal', tx.id);
   proposal.proposalStatus = 'APPROVAL_PENDING';
   proposal.invoiceRequestId = tx.invoiceRequestId;
-  proposal.invoiceId = tx.invoiceId;
+  proposal.invoiceId = invoiceRequest.invoiceId;
   proposal.vendorId = tx.vendorId
   proposal.financerId = tx.financerId;
   proposal.corporationId = tx.corporationId;

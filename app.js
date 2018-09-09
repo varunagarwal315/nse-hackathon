@@ -87,6 +87,10 @@ app.get('/create-offer', (req, res) => {
   res.sendFile(path.resolve(`${__dirname}/public/create-offer.html`));
 });
 
+app.get('/view-offer', (req, res) => {
+  res.sendFile(path.resolve(`${__dirname}/public/view-offer.html`));
+});
+
 app.listen(port)
   .on('error', error => {
     // logger.error(error);
