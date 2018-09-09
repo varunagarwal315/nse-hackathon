@@ -14,11 +14,13 @@
 
 ## Deployment steps
 - `cd chaincode`
-- `composer archive create -t dir -n .`
-- `composer network install -c PeerAdmin@fabric-network -a nse-hackathon@1.0.0.bna`
-- `composer network start --networkName nse-hackathon --networkVersion 1.0.0 -A admin -S adminpw -c PeerAdmin@fabric-network`
-- `composer card import -f admin@nse-hackathon.card`
-- `composer network ping -c admin@nse-hackathon`
+
+composer archive create -t dir -n .
+composer network install -c PeerAdmin@fabric-network -a nse-hackathon@2.0.0.bna
+composer network start --networkName nse-hackathon --networkVersion 2.0.0 -A admin -S adminpw -c PeerAdmin@fabric-network
+composer card import -f admin@nse-hackathon.card
+composer network ping -c admin@nse-hackathon
+
 - Don't forget to check the network version with that in `/chaincode/package.json`
 
 ## Safe restart

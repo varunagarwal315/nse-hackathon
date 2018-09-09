@@ -120,9 +120,9 @@ const initIdentities = () => {
         businessNetwork: 'nse-hackathon'
       }, connectionProfile);
 
-      await adminConnection.importCard('vendor', cardOne);
-      await adminConnection.importCard('corporation', cardTwo);
-      await adminConnection.importCard('financer', cardThree);
+      await adminConnection.importCard('vendor@nse-hackathon', cardOne);
+      await adminConnection.importCard('corporation@nse-hackathon', cardTwo);
+      await adminConnection.importCard('financer@nse-hackathon', cardThree);
 
       await businessNetworkConnection.disconnect();
       await adminConnection.disconnect();

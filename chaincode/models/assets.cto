@@ -31,6 +31,7 @@ asset Proposal identified by id {
   o String vendorId
   o String financerId
   o String corporationId
+  o String invoiceId
   o DateTime dateOfCreation
   o Double amount
   o Double numberOfDays
@@ -97,6 +98,8 @@ transaction InitiateProposal {
   o String id
   o String invoiceRequestId
   o String vendorId
+  o String financerId
+  o String invoiceId
   o String corporationId
   o Double amount
   o Double numberOfDays

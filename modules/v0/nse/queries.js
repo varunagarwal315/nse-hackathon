@@ -5,7 +5,7 @@ const ASSET_NS = 'com.algorythmix.assets';
 const PARTICIPANT_NS = 'com.algorythmix.participants';
 const adminCard = 'admin@nse-hackathon';
 
-const getAllRequirements = (req, res) => {
+const getAllRequirements = async (req, res) => {
   try {
     const businessNetworkConnection = new BusinessNetworkConnection();
     await businessNetworkConnection.connect(adminCard);
@@ -30,4 +30,64 @@ const getAllRequirements = (req, res) => {
       }
     });
   };
+};
+
+const getAllProposals = async (req, res) => {
+  try {
+    const businessNetworkConnection = new BusinessNetworkConnection();
+    await businessNetworkConnection.connect(adminCard);
+    const qry = businessNetworkConnection.buildQuery(`SELECT ${ASSET_NS}.Proposal`);
+    let proposal = await businessNetworkConnection.query(qry, {});
+    let serializedProposal = [];
+    for (var i = 0; i < proposal.length; i++) {
+      serializedProposal.push(businessNetworkConnection.getBusinessNetwork().getSerializer().toJSON(proposal[i]));
+    };
+    await businessNetworkConnection.disconnect();
+    res.json({
+      timestamp: new Date(),
+      baseUrl: req.baseUrl,
+      proposal: serializedProposal,
+      devMessage: 'Success'
+    });
+  } catch (e) {
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
+  };
+};
+
+const getAllInvoicesRequests = async (req, res) => {
+  try {
+    const businessNetworkConnection = new BusinessNetworkConnection();
+    await businessNetworkConnection.connect(adminCard);
+    const qry = businessNetworkConnection.buildQuery(`SELECT ${ASSET_NS}.InvoiceRequest`);
+    let proposal = await businessNetworkConnection.query(qry, {});
+    let serializedProposal = [];
+    for (var i = 0; i < proposal.length; i++) {
+      serializedProposal.push(businessNetworkConnection.getBusinessNetwork().getSerializer().toJSON(proposal[i]));
+    };
+    await businessNetworkConnection.disconnect();
+    res.json({
+      timestamp: new Date(),
+      baseUrl: req.baseUrl,
+      invoiceRequest: serializedProposal,
+      devMessage: 'Success'
+    });
+  } catch (e) {
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
+  };
+};
+
+module.exports = {
+  getAllRequirements,
+  getAllProposals,
+  getAllInvoicesRequests
 };

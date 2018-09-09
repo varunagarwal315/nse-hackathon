@@ -66,6 +66,8 @@ async function InitiateProposal(tx) {
   proposal.proposalStatus = 'APPROVAL_PENDING';
   proposal.invoiceRequestId = tx.invoiceRequestId;
   proposal.invoiceId = tx.invoiceId;
+  proposal.vendorId = tx.vendorId
+  proposal.financerId = tx.financerId;
   proposal.corporationId = tx.corporationId;
   proposal.amount = tx.amount;
   proposal.numberOfDays = tx.numberOfDays;

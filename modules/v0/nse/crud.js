@@ -9,7 +9,7 @@ const vendorCard = 'vendor@nse-hackathon';
 const corporationCard = 'corporation@nse-hackathon';
 
 
-const initiateRequirements = (req, res) => {
+const initiateRequirements = async (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(corporationCard);
@@ -39,7 +39,7 @@ const initiateRequirements = (req, res) => {
 };
 
 
-const initiateInvoiceRequest = (req, res) => {
+const initiateInvoiceRequest = async (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(vendorCard);
@@ -50,7 +50,9 @@ const initiateInvoiceRequest = (req, res) => {
     tx.amountRequested = req.body.amountRequested;
     tx.corporationId = req.body.corporationId;
     tx.invoiceId = req.body.invoiceId;
-    tx.paymentDate = req.body.paymentDate;
+    var d = new Date();
+    d.setMonth(d.getMonth() + 3);
+    tx.paymentDate = new Date(d);
     tx.requirementsId = req.body.requirementsId;
     await businessNetworkConnection.submitTransaction(tx);
 
@@ -71,7 +73,7 @@ const initiateInvoiceRequest = (req, res) => {
 };
 
 
-const approveInvoiceRequest = (req, res) => {
+const approveInvoiceRequest = async (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(corporationCard);
@@ -88,25 +90,31 @@ const approveInvoiceRequest = (req, res) => {
       devMessage: 'Success'
     });
   } catch (e) {
-    devMessage: 'Critical error',
-    error: {
-      message: e.message
-    }
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
   };
 };
 
-const initiateProposal = (req, res) => {
+const initiateProposal = async (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(financerCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
 
     let tx = factory.newTransaction(ASSET_NS, 'InitiateProposal');
+    tx.id = req.body.id;
     tx.invoiceRequestId = req.body.invoiceRequestId;
     tx.invoiceId = req.body.invoiceId;
     tx.corporationId = req.body.corporationId;
+    tx.financerId = req.body.financerId;
+    tx.vendorId = req.body.vendorId;
     tx.amount = req.body.amount;
     tx.numberOfDays = req.body.numberOfDays;
+    tx.interestRate = req.body.interestRate;
     await businessNetworkConnection.submitTransaction(tx);
 
     await businessNetworkConnection.disconnect();
@@ -116,14 +124,16 @@ const initiateProposal = (req, res) => {
       devMessage: 'Success'
     });
   } catch (e) {
-    devMessage: 'Critical error',
-    error: {
-      message: e.message
-    }
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
   };
 };
 
-const vendorApprovesProposal = (req, res) => {
+const vendorApprovesProposal = async (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(vendorCard);
@@ -141,14 +151,16 @@ const vendorApprovesProposal = (req, res) => {
       devMessage: 'Success'
     });
   } catch (e) {
-    devMessage: 'Critical error',
-    error: {
-      message: e.message
-    }
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
   };
 };
 
-const corporationApprovesProposal = (req, res) => {
+const corporationApprovesProposal = async (req, res) => {
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(corporationCard);
@@ -166,10 +178,12 @@ const corporationApprovesProposal = (req, res) => {
       devMessage: 'Success'
     });
   } catch (e) {
-    devMessage: 'Critical error',
-    error: {
-      message: e.message
-    }
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
   };
 };
 
