@@ -18,7 +18,7 @@ router.post('/proposal/vendor/approve', crud.vendorApprovesProposal);
 router.post('/proposal/corporation/approve', crud.corporationApprovesProposal);
 
 router.get('/requirements', queries.getAllRequirements);
-router.get('/proposals', queries.getAllRequirements);
+router.get('/proposals', queries.getAllProposals);
 router.get('/invoiceRequests', queries.getAllInvoicesRequests);
-
+router.get('/invoiceDiscount', queries.getAllInvoiceDiscounts);
 module.exports = router;

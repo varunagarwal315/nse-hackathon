@@ -65,8 +65,8 @@ enum ProposalStatus {
 }
 
 enum InvoiceDiscountingStatus {
-  o APPROVAL_PENDING
-  o APPROVED
+  o AWAITING_PAYMENT
+  o PAYMENT_RECEIVED
 }
 
 

@@ -86,8 +86,36 @@ const getAllInvoicesRequests = async (req, res) => {
   };
 };
 
+const getAllInvoiceDiscounts = async (req, res) => {
+  try {
+    const businessNetworkConnection = new BusinessNetworkConnection();
+    await businessNetworkConnection.connect(adminCard);
+    const qry = businessNetworkConnection.buildQuery(`SELECT ${ASSET_NS}.InvoiceDiscounting`);
+    let proposal = await businessNetworkConnection.query(qry, {});
+    let serializedProposal = [];
+    for (var i = 0; i < proposal.length; i++) {
+      serializedProposal.push(businessNetworkConnection.getBusinessNetwork().getSerializer().toJSON(proposal[i]));
+    };
+    await businessNetworkConnection.disconnect();
+    res.json({
+      timestamp: new Date(),
+      baseUrl: req.baseUrl,
+      invoiceDiscount: serializedProposal,
+      devMessage: 'Success'
+    });
+  } catch (e) {
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
+  };
+};
+
 module.exports = {
   getAllRequirements,
   getAllProposals,
-  getAllInvoicesRequests
+  getAllInvoicesRequests,
+  getAllInvoiceDiscounts
 };

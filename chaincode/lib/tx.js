@@ -115,7 +115,13 @@ async function CorporationApprovesProposal(tx) {
   if (tx.approve) {
     var invoiceRegistry = await getAssetRegistry('com.algorythmix.assets.InvoiceDiscounting');
     var uuid = proposal.invoiceRequestId + proposal.id;
+
     var invoiceDiscount = factory.newResource('com.algorythmix.assets', 'InvoiceDiscounting', uuid);
-    invoiceDiscount
+    invoiceDiscount.proposalId = tx.proposalId;
+    invoiceDiscount.vendorId = tx.vendorId;
+    invoiceDiscount.financerId = tx.financerId;
+    invoiceDiscount.corporationId = tx.corporationId;
+    invoiceDiscount.invoiceDiscountingStatus = 'AWAITING_PAYMENT';
+    await invoiceRegistry.add(invoiceDiscount);
   };
 };
