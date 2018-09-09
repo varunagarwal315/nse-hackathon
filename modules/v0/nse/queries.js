@@ -86,6 +86,30 @@ const getAllInvoicesRequests = async (req, res) => {
   };
 };
 
+const getSpecificInvoice = async (req, res) => {
+  try {
+    const businessNetworkConnection = new BusinessNetworkConnection();
+    await businessNetworkConnection.connect(adminCard);
+    let registry = await businessNetworkConnection.getParticipantRegistry(`${ASSET_NS}.InvoiceRequest`);
+    let invoice = await registry.get(req.params.id);
+    let serialized = businessNetworkConnection.getBusinessNetwork().getSerializer().toJSON(invoice);
+    await businessNetworkConnection.disconnect();
+    res.json({
+      timestamp: new Date(),
+      baseUrl: req.baseUrl,
+      invoiceRequest: serialized,
+      devMessage: 'Success'
+    });
+  } catch (e) {
+    res.json({
+      devMessage: 'Critical error',
+      error: {
+        message: e.message
+      }
+    });
+  };
+};
+
 const getAllInvoiceDiscounts = async (req, res) => {
   try {
     const businessNetworkConnection = new BusinessNetworkConnection();

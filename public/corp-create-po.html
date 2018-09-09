@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>Customers | Supply Sense</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <title></title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  </head>
+  <body >
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Name</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Page 0</a></li>
+            <li><a href="#">Page 1</a></li>
+            <li><a href="#">Page 2</a></li>
+            <li><a href="#">Page 3</a></li>
+          </ul>
+        </div>
+      </nav>
+      <form class="form-horizontal">
+        <fieldset>
+
+        <!-- Form Name -->
+        <legend style="margin-left: 96px">A buyer/corporation creates a purchase order (PO)</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">PO Number</label>
+        <div class="col-md-4">
+        <input id="po-number" name="textinput" type="text" placeholder="" class="form-control input-md">
+
+        </div>
+        </div>
+
+        <!-- Text input-->
+        <!-- <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">Creation Date</label>
+        <div class="col-md-4">
+        <input id="creation-date" name="textinput" type="text" placeholder="" class="form-control input-md">
+
+        </div>
+        </div> -->
+
+        <!-- Text input-->
+        <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">PO description</label>
+        <div class="col-md-4">
+        <input id="po-desc" name="textinput" type="text" placeholder="" class="form-control input-md">
+
+        </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">Issued To</label>
+        <div class="col-md-4">
+        <input id="issue-to" name="textinput" type="text" placeholder="" class="form-control input-md">
+
+        </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">PO amount (INR)</label>
+        <div class="col-md-4">
+        <input id="po-value" name="textinput" type="text" placeholder="" class="form-control input-md">
+
+        </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+        <label class="col-md-4 control-label" for="singlebutton"></label>
+        <div class="col-md-4">
+          <button id="singlebutton" name="singlebutton" class="btn btn-primary">Create</button>
+        </div>
+        </div>
+
+        </fieldset>
+        </form>
+
+        <h4 id="response" style="margin-left:250px;">11</h4>
+        <script src="corp-create-po.js"></script>
+  </body>
+</html>

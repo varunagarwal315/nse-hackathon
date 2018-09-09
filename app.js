@@ -65,14 +65,27 @@ endpoints.forEach((name) => {
 });
 
 app.get('/', (req, res) => {
-  res.redirect('/login');
+  res.redirect('/corp-create-po');
 });
-app.get('/login', (req, res) => {
-  res.sendFile(path.resolve(`${__dirname}/public/login.html`));
+app.get('/corp-create-po', (req, res) => {
+  res.sendFile(path.resolve(`${__dirname}/public/corp-create-po.html`));
 });
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.resolve(`${__dirname}/public/dashboard-two.html`));
-})
+
+app.get('/invoice', (req, res) => {
+  res.sendFile(path.resolve(`${__dirname}/public/invoice.html`));
+});
+
+app.get('/create-invoice', (req, res) => {
+  res.sendFile(path.resolve(`${__dirname}/public/create-invoice.html`));
+});
+
+app.get('/invoice-action', (req, res) => {
+  res.sendFile(path.resolve(`${__dirname}/public/approve-reject-invoice.html`));
+});
+
+app.get('/create-offer', (req, res) => {
+  res.sendFile(path.resolve(`${__dirname}/public/create-offer.html`));
+});
 
 app.listen(port)
   .on('error', error => {

@@ -10,6 +10,7 @@ const corporationCard = 'corporation@nse-hackathon';
 
 
 const initiateRequirements = async (req, res) => {
+  console.log(req.body);
   const businessNetworkConnection = new BusinessNetworkConnection();
   try {
     await businessNetworkConnection.connect(corporationCard);
@@ -29,6 +30,7 @@ const initiateRequirements = async (req, res) => {
       devMessage: 'Success'
     });
   } catch (e) {
+    console.log(e.message)
     res.json({
       devMessage: 'Critical error',
       error: {
@@ -44,11 +46,11 @@ const initiateInvoiceRequest = async (req, res) => {
   try {
     await businessNetworkConnection.connect(vendorCard);
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
-
+    console.log(`initiateInvoiceRequest called`);
     let tx = factory.newTransaction(ASSET_NS, 'InitiateInvoiceRequest');
-    tx.id = req.body.id;
-    tx.amountRequested = req.body.amountRequested;
-    tx.corporationId = req.body.corporationId;
+    tx.id = 'vendor1234' + req.body.invoiceId;
+    tx.amountRequested = parseFloat(req.body.amountRequested);
+    tx.corporationId = 'corporation1234'; // TODO: LEFT, hardcode?
     tx.invoiceId = req.body.invoiceId;
     var d = new Date();
     d.setMonth(d.getMonth() + 3);
@@ -63,6 +65,7 @@ const initiateInvoiceRequest = async (req, res) => {
       devMessage: 'Success'
     });
   } catch (e) {
+    console.log(e.message);
     res.json({
       devMessage: 'Critical error',
       error: {
@@ -106,15 +109,17 @@ const initiateProposal = async (req, res) => {
     const factory = businessNetworkConnection.getBusinessNetwork().getFactory();
 
     let tx = factory.newTransaction(ASSET_NS, 'InitiateProposal');
+
     tx.id = req.body.id;
     tx.invoiceRequestId = req.body.invoiceRequestId;
-    tx.invoiceId = req.body.invoiceId;
-    tx.corporationId = req.body.corporationId;
-    tx.financerId = req.body.financerId;
-    tx.vendorId = req.body.vendorId;
+    // tx.invoiceId = req.body.invoiceId;
     tx.amount = req.body.amount;
     tx.numberOfDays = req.body.numberOfDays;
     tx.interestRate = req.body.interestRate;
+
+    tx.corporationId = 'corporation1234';
+    tx.financerId = 'financer1234'
+    tx.vendorId = 'vendor1234';
     await businessNetworkConnection.submitTransaction(tx);
 
     await businessNetworkConnection.disconnect();
